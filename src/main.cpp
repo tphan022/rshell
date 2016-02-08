@@ -49,7 +49,7 @@ bool run(char** runcommand) {
 	}
 	else if(PID == 0) {
 		if(execvp(*runcommand, runcommand) < 0) {
-			cout << "Error: execution Error" << endl;
+			perror("Error in Execution");
 			exit(1);
 		}
 	}
