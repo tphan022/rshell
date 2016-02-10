@@ -29,14 +29,33 @@ void tokenizing(char& argument, vector<string>* v) {
 	char* ptr;
 	ptr = strtok(&argument, " \n");
 	string temp(ptr);
+	for(unsigned int i = 0; i < temp.size(); ++i)
+	{
+		if(temp[i] == ';' && temp.size() > 1)
+		{
+			temp.resize(temp.size() - 1);
+			v->push_back(temp);
+			temp = ";";
+			v->push_back(temp);
+			goto end2;
+		}
+		else if(temp[i] == ';' && temp.size() == 1)
+		{
+			v->push_back(temp);
+			goto end2;
+		}
+	}
+
 	v->push_back(temp);
+
+	end2:;
 	while(ptr != NULL) 
 	{
 		ptr = strtok(NULL, " \n");
 		if(ptr != NULL) 
 		{
 			string temp2(ptr);
-			for(int i = 0; i < temp2.size(); ++i)
+			for(unsigned int i = 0; i < temp2.size(); ++i)
 			{
 				if(temp2[i] == ';' && temp2.size() > 1)
 				{
@@ -118,14 +137,12 @@ void connectors(vector<string>* v, char** command) {
 				break;
 			}
 		}
-		//else if(v->at(i).at(v->at(i).size() - 1) == ";") {
-		//	string temp = v->at(i).substr(0,v->at(i).size()-1);
-		//	command[command_i] = (char*)temp.c_str();
-		//	command[command_i + 1] = 0;
-		//	successful = run(command);
-		//	i++;
-		//	command_i = 0;
-		//}
+		else if(v->at(i) == ";") {
+			command[command_i] = 0;
+			successful = run(command);
+			command_i = 0;
+			i++;
+		}
 			
 		else {
 			command[command_i] = (char*)v->at(i).c_str();
