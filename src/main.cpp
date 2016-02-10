@@ -16,7 +16,7 @@ void display(char& argument) {
 		char* userinfo = getlogin();
 		char location[20];
 		gethostname(location,20);
-		cout << "<" << userinfo << "@" << location << ">" << "$";
+		cout << "<" << userinfo << "@" << location << ">" << "$ ";
 		fgets(&argument,1024,stdin);
 		if(argument != '\n') {
 			break;
