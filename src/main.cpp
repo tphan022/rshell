@@ -30,12 +30,30 @@ void tokenizing(char& argument, vector<string>* v) {
 	ptr = strtok(&argument, " \n");
 	string temp(ptr);
 	v->push_back(temp);
-	while(ptr != NULL) {
-		
+	while(ptr != NULL) 
+	{
 		ptr = strtok(NULL, " \n");
-		if(ptr != NULL) {
+		if(ptr != NULL) 
+		{
 			string temp2(ptr);
+			for(int i = 0; i < temp2.size(); ++i)
+			{
+				if(temp2[i] == ';' && temp2.size() > 1)
+				{
+					temp2.resize(temp2.size() - 1);
+					v->push_back(temp2);
+					temp2 = ";";
+					v->push_back(temp2);
+					goto end;
+				}
+				else if(temp2[i] == ';' && temp2.size() == 1)
+				{
+					v->push_back(temp2);
+					goto end;
+				}
+			}
 			v->push_back(temp2);
+			end:;	
 		}
 	}
 }
