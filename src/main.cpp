@@ -29,8 +29,7 @@ void tokenizing(char& argument, vector<string>* v) {
 	char* ptr;
 	ptr = strtok(&argument, " \n");
 	string temp(ptr);
-	for(unsigned int i = 0; i < temp.size(); ++i)
-	{
+	for(unsigned int i = 0; i < temp.size(); ++i) {
 		if(temp[i] == ';' && temp.size() > 1)
 		{
 			temp.resize(temp.size() - 1);
@@ -55,8 +54,7 @@ void tokenizing(char& argument, vector<string>* v) {
 		if(ptr != NULL) 
 		{
 			string temp2(ptr);
-			for(unsigned int i = 0; i < temp2.size(); ++i)
-			{
+			for(unsigned int i = 0; i < temp2.size(); ++i) {
 				if(temp2[i] == ';' && temp2.size() > 1)
 				{
 					temp2.resize(temp2.size() - 1);
@@ -79,21 +77,21 @@ void tokenizing(char& argument, vector<string>* v) {
 
 bool run(char** runcommand) {
 	pid_t PID;
-	int s;
+	int waitval;
 	if((PID = fork()) < 0) {
-		cout << "Error, forking failed" << endl;
+		perror("Forking has failed! ");
 		exit(1);
 	}
 	else if(PID == 0) {
 		if(execvp(*runcommand, runcommand) < 0) {
-			perror("Error in Execution");
+			perror("Error in execution! ");
 			exit(1);
 		}
 	}
 	else {
-		while(wait(&s) != PID) {};
+		while(wait(&waitval) != PID) {};
 	}
-	if(s != 0) {
+	if(waitval != 0) {
 		return false;
 	}	
 	return true;
