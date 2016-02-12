@@ -28,7 +28,11 @@ The only current working built in is `exit`, which will exit the program. This c
 
 ## Bugs
 A current bug is that # will only work if it is not connected to any argument so that:
+
     echo hello; # echo world
+
 will print only hello while
+
     echo hello; #echo world
+
 will break the command argument and try to unsuccessfully register `#echo` as an argument in the shell.
