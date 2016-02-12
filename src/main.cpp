@@ -37,8 +37,8 @@ void tokenizing(char& argument, vector<string>* v) {
 		if(ptr != NULL) 
 		{
 			temp = ptr;
-			reset:												// The reset label is there so that continuously loop through the
-			for(int i = 0; i < temp.size(); ++i)				// argument and tokenize it depending on its specific case
+			reset:															// The reset label is there so that continuously loop through the
+			for(unsigned int i = 0; i < temp.size(); ++i)					// argument and tokenize it depending on its specific case
 			{
 				if(temp[i] == ';' && temp.size() > 1 && temp[i+1] == '\0')	// (Semicolon) For single arguments that have a connector at the end
 				{
