@@ -38,7 +38,7 @@ void tokenizing(char& argument, vector<string>* v) {
 		{
 			temp = ptr;
 			reset:
-			for(int i = 0; i < temp.size(); ++i)
+			for(unsigned int i = 0; i < temp.size(); ++i)
 			{
 				if(temp[i] == ';' && temp.size() > 1 && temp[i+1] == '\0')
 				{
