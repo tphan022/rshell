@@ -19,7 +19,17 @@ ls will run since meowmeow is not a valid command.
 
 The AND connector is similar to the OR connector, but will run the second command only when the first one **succeeds**.
 
+    echo hello && echo world
+    meow && echo woof
+
+In this case the shell would output `hello world` while the second part will throw an error code and not echo woof since the first instance failed.
+
 The semicolon will run the next command regardless of whether the first once succeeded or not.
+
+    ls; pwd
+    meow; pwd
+
+In both instances, pwd would run, since it ignores the successfulness of the first argument.
 
 Anything that appears after a # will be considered a comment, meaning `echo ILIKEPIZZA; # echo ILIKEPIE` will echo ILIKEPIZZA but will not echo ILIKEPIE because everything after # is ignored by the shell.
 
@@ -42,7 +52,7 @@ Another bug encountered is that connectors between each argument either will req
     ls -a && echo dog
     ls -a&&echo dog
 
-both of these instances works an parses correctly but
+both of these instances works and parses correctly but
 
     ls -a&& echo dog
     ls -a &&echo dog
