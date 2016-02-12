@@ -1,6 +1,6 @@
 # rshell
 ## Overview
-In this project, we built a simple shell that proccesses inputs and executes them.
+In this project, we built a simple shell that processes inputs and executes them.
 
 This shell is able to handle connectors and correctly runs each command whether it is a single argument like `ls`, or has parameters such as `ls -a`. 
 
@@ -36,3 +36,11 @@ will print only hello while
     echo hello; #echo world
 
 will break the command argument and try to unsuccessfully register `#echo` as an argument in the shell.
+
+Another bug encountered is that connectors between each argument either will require spaces on both sides or non at all in order to work. An example is:
+    ls -a && echo dog
+    ls -a&&echo dog
+both of these instances works an parses correctly but
+    ls -a&& echo dog
+    ls -a &&echo dog
+will not work correctly.
