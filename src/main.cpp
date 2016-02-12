@@ -16,7 +16,7 @@ void display(char& argument) {
 		char* userinfo = getlogin();
 		char location[20];
 		gethostname(location,20);
-		cout << "<" << userinfo << "@" << location << ">" << "$";
+		cout << "<" << userinfo << "@" << location << ">" << "$ ";
 		fgets(&argument,1024,stdin);
 		if(argument != '\n') {
 			break;
@@ -30,6 +30,7 @@ void tokenizing(char& argument, vector<string>* v) {
 	ptr = strtok(&argument, " \n");
 	string temp(ptr);
 	goto reset;
+
 	while(ptr != NULL) 
 	{
 		ptr = strtok(NULL, " \n");
@@ -121,21 +122,21 @@ void tokenizing(char& argument, vector<string>* v) {
 
 bool run(char** runcommand) {
 	pid_t PID;
-	int s;
+	int waitval;
 	if((PID = fork()) < 0) {
-		cout << "Error, forking failed" << endl;
+		perror("Forking has failed! ");
 		exit(1);
 	}
 	else if(PID == 0) {
 		if(execvp(*runcommand, runcommand) < 0) {
-			perror("Error in Execution");
+			perror("Error in execution! ");
 			exit(1);
 		}
 	}
 	else {
-		while(wait(&s) != PID) {};
+		while(wait(&waitval) != PID) {};
 	}
-	if(s != 0) {
+	if(waitval != 0) {
 		return false;
 	}	
 	return true;
@@ -179,14 +180,12 @@ void connectors(vector<string>* v, char** command) {
 				break;
 			}
 		}
-		//else if(v->at(i).at(v->at(i).size() - 1) == ";") {
-		//	string temp = v->at(i).substr(0,v->at(i).size()-1);
-		//	command[command_i] = (char*)temp.c_str();
-		//	command[command_i + 1] = 0;
-		//	successful = run(command);
-		//	i++;
-		//	command_i = 0;
-		//}
+		else if(v->at(i) == ";") {
+			command[command_i] = 0;
+			successful = run(command);
+			command_i = 0;
+			i++;
+		}
 			
 		else {
 			command[command_i] = (char*)v->at(i).c_str();
