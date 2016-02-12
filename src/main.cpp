@@ -29,30 +29,91 @@ void tokenizing(char& argument, vector<string>* v) {
 	char* ptr;
 	ptr = strtok(&argument, " \n");
 	string temp(ptr);
-	v->push_back(temp);
+	goto reset;
 	while(ptr != NULL) 
 	{
 		ptr = strtok(NULL, " \n");
 		if(ptr != NULL) 
 		{
-			string temp2(ptr);
-			for(int i = 0; i < temp2.size(); ++i)
+			temp = ptr;
+			reset:
+			for(int i = 0; i < temp.size(); ++i)
 			{
-				if(temp2[i] == ';' && temp2.size() > 1)
+				if(temp[i] == ';' && temp.size() > 1 && temp[i+1] == '\0')
 				{
-					temp2.resize(temp2.size() - 1);
-					v->push_back(temp2);
-					temp2 = ";";
-					v->push_back(temp2);
+					temp.resize(temp.size() - 1);
+					v->push_back(temp);
+					temp = ";";
+					v->push_back(temp);
 					goto end;
 				}
-				else if(temp2[i] == ';' && temp2.size() == 1)
+				else if(temp[i] == ';' && temp.size() == 1)
 				{
-					v->push_back(temp2);
+					v->push_back(temp);
 					goto end;
 				}
+				else if(temp[i] == ';' && temp[i+1] != '\0')
+				{
+					size_t pos = temp.find(";");
+					string temp2 = temp.substr(pos + 1);
+		
+					temp = temp.substr(0, temp.find(";"));
+					v->push_back(temp);
+					v->push_back(";");
+
+					temp = temp2;
+					goto reset;
+				}
+				else if(temp[i] == '|' && temp[i+1] == '|' && temp[i+2] == '\0')
+				{
+					temp.resize(temp.size() - 2);
+					v->push_back(temp);
+					v->push_back("||");
+					goto end;
+				}
+				else if(temp[i] == '|' && temp[i+1] == '|' && temp.size() == 2)
+				{
+					v->push_back(temp);
+					goto end;
+				}
+				else if(temp[i] == '|' && temp[i+1] == '|' && temp[i+2] != '\0')
+				{
+					size_t pos = temp.find("||");
+					string temp2 = temp.substr(pos + 2);
+				
+					temp = temp.substr(0, temp.find("||"));
+					v->push_back(temp);
+					v->push_back("||");
+			
+					temp = temp2;
+					goto reset;
+				}
+				else if(temp[i] == '&' && temp[i+1] == '&' && temp[i+2] == '\0')
+				{
+					temp.resize(temp.size() - 2);
+					v->push_back(temp);
+					v->push_back("&&");
+				}
+				else if(temp[i] == '&' && temp[i+1] == '&' && temp.size() == 2)
+				{
+					v->push_back(temp);
+					goto end;
+				}
+				else if(temp[i] == '&' && temp[i+1] == '&' && temp[i+2] != '\0')
+				{
+					size_t pos = temp.find("&&");
+					string temp2 = temp.substr(pos + 2);
+			
+					temp = temp.substr(0, temp.find("&&"));
+					v->push_back(temp);
+					v->push_back("&&");
+
+					temp = temp2;
+					goto reset;
+				}
+					
 			}
-			v->push_back(temp2);
+			v->push_back(temp);
 			end:;	
 		}
 	}
