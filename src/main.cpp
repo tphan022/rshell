@@ -13,11 +13,11 @@ using namespace std;
 // This display function displays the prompt and recieves the user input
 void display(char& argument) {
 	while(1) {
-		char* userinfo = getlogin();							// Gets login informatiom from the user (Username and Location)
+		char* userinfo = getlogin();		// Gets login informatiom from the user (Username and Location)
 		char location[20];
 		gethostname(location,20);
 		cout << "<" << userinfo << "@" << location << ">" << "$ ";
-		fgets(&argument,1024,stdin);							// Gets the line of argument from the user
+		fgets(&argument,1024,stdin);		// Gets the line of argument from the user
 		if(argument != '\n') {
 			break;
 		}
@@ -37,25 +37,24 @@ void tokenizing(char& argument, vector<string>* v) {
 		if(ptr != NULL) 
 		{
 			temp = ptr;
-			reset:															// The reset label is there so that continuously loop through the
-			for(unsigned int i = 0; i < temp.size(); ++i)					// argument and tokenize it depending on its specific case
+			reset:		// The reset label helps look through argument, so we can tokenize
+			for(unsigned int i = 0; i < temp.size(); ++i)
 			{
-				if(temp[i] == ';' && temp.size() > 1 && temp[i+1] == '\0')	// (Semicolon) For single arguments that have a connector at the end
+				if(temp[i] == ';' && temp.size() > 1 && temp[i+1] == '\0')		// (Semicolon) For single arguments that have a connector at the end
 				{
 					temp.resize(temp.size() - 1);
-					v->push_back(temp);							// Jumps to the end label so that argument doesnt get pushed again
-					temp = ";";
+					v->push_back(temp);			// Jumps to the end label so argument doesnt get pushed
+					temp = ";";	// again
 					v->push_back(temp);
 					goto end;
 				}
-				else if(temp[i] == ';' && temp.size() == 1)		// (Semicolon) For when only a semicolon is to be stored 
+				else if(temp[i] == ';' && temp.size() == 1)			// (Semicolon) For when only a semicolon is to be stored 
 				{
 					v->push_back(temp);
 					goto end;
 				}
-				else if(temp[i] == ';' && temp[i+1] != '\0')	// (Semicolon) For when there are two commands connected together with
-				{												// a semicolon in the between or connector is in front of command
-					size_t pos = temp.find(";");
+				else if(temp[i] == ';' && temp[i+1] != '\0'){		// (Semicolon) For when there are two commands connected together with
+					size_t pos = temp.find(";");		// a semicolon in between or connector is in front of command
 					string temp2 = temp.substr(pos + 1);
 		
 					temp = temp.substr(0, temp.find(";"));
@@ -65,13 +64,13 @@ void tokenizing(char& argument, vector<string>* v) {
 					}
 					else
 					{
-						v->push_back(";");						// Jumps to reset because of arguments after connector needs to be
-					}											// tokenized
+						v->push_back(";");			// Jumps to reset because of arguments after connector needs to be tokenized
+					}
 					temp = temp2;
 					goto reset;
 				}
-				else if(temp[i] == '|' && temp[i+1] == '|' && temp[i+2] == '\0' && temp.size() > 2) // (OR) For single arguments that have a
-				{																					// OR connector at the end
+				else if(temp[i] == '|' && temp[i+1] == '|' && temp[i+2] == '\0' && temp.size() > 2)		// (OR) For single arguments that have a
+				{		// OR connector at the end
 					temp.resize(temp.size() - 2);
 					v->push_back(temp);
 					v->push_back("||");
@@ -82,9 +81,8 @@ void tokenizing(char& argument, vector<string>* v) {
 					v->push_back(temp);
 					goto end;
 				}
-				else if(temp[i] == '|' && temp[i+1] == '|' && temp[i+2] != '\0')	// (OR) For when there are two commands connected together
-				{																	// by the OR connector or connector in front of command
-					size_t pos = temp.find("||");
+				else if(temp[i] == '|' && temp[i+1] == '|' && temp[i+2] != '\0')		// (OR) For when there are two commands connected together
+					size_t pos = temp.find("||");		// by the OR connector or connector in front of command
 					string temp2 = temp.substr(pos + 2);
 				
 					temp = temp.substr(0, temp.find("||"));
@@ -100,8 +98,8 @@ void tokenizing(char& argument, vector<string>* v) {
 					temp = temp2;
 					goto reset;
 				}
-				else if(temp[i] == '&' && temp[i+1] == '&' && temp[i+2] == '\0' && temp.size() > 2) // (AND) For single arguments with an AND
-				{																					// connector at the end
+				else if(temp[i] == '&' && temp[i+1] == '&' && temp[i+2] == '\0' && temp.size() > 2)		// (AND) For single arguments with an AND
+				{		// connector at the end
 					temp.resize(temp.size() - 2);
 					v->push_back(temp);
 					v->push_back("&&");
@@ -111,9 +109,8 @@ void tokenizing(char& argument, vector<string>* v) {
 					v->push_back(temp);
 					goto end;
 				}
-				else if(temp[i] == '&' && temp[i+1] == '&' && temp[i+2] != '\0')	// (AND) For when two arguments are connected
-				{																	// by an AND connector or connector in front of
-					size_t pos = temp.find("&&");									// command
+				else if(temp[i] == '&' && temp[i+1] == '&' && temp[i+2] != '\0'){		// (AND) For when two arguments are connected
+					size_t pos = temp.find("&&");		// by an AND connector in front of command
 					string temp2 = temp.substr(pos + 2);
 			
 					temp = temp.substr(0, temp.find("&&"));
@@ -140,17 +137,17 @@ void tokenizing(char& argument, vector<string>* v) {
 bool run(char** runcommand) {
 	pid_t PID;
 	int waitval;
-	if((PID = fork()) < 0) {
+	if((PID = fork()) < 0) {		// Forks a child process and if fails it exits program
 		perror("Forking has failed! ");
 		exit(1);
 	}
-	else if(PID == 0) {
+	else if(PID == 0) {			// Executes the command from child process
 		if(execvp(*runcommand, runcommand) < 0) {
 			perror("Error in execution! ");
 			exit(1);
 		}
 	}
-	else {
+	else {		// Parent waits for completion from child
 		while(wait(&waitval) != PID) {};
 	}
 	if(waitval != 0) {
@@ -166,16 +163,16 @@ void connectors(vector<string>* v, char** command) {
 	unsigned int i = 0;
 	int command_i = 0;
 	while(i < v->size()) {
-		if(v->at(i) == "exit") {			// Stops running through whole program 
+		if(v->at(i) == "exit") {		// Stops running through whole program 
 			cout << "Program Exited." << endl;
 			exit(0);
 		}
-		if(v->at(i) == "#") {				// Stops running through vector after seeing the "#" symbol
+		if(v->at(i) == "#") {		// Stops running through vector after seeing the "#" symbol
 			command[command_i] = 0;
 			successful = run(command);
 			break;
 		}
-		if(v->at(i) == "&&") {
+		if(v->at(i) == "&&") {		// Executes the next command if the previous one worked
 			command[command_i] = 0;
 			successful = run(command);
 			if(!successful) {
@@ -187,7 +184,7 @@ void connectors(vector<string>* v, char** command) {
 			}
 
 		}
-		else if(v->at(i) == "||") {
+		else if(v->at(i) == "||") {	// Executes the next command if the previous one failed
 			command[command_i] = 0;
 			successful = run(command);
 			if(!successful) {
@@ -198,7 +195,7 @@ void connectors(vector<string>* v, char** command) {
 				break;
 			}
 		}
-		else if(v->at(i) == ";") {
+		else if(v->at(i) == ";") {	// Executes next command regardless of previous one
 			command[command_i] = 0;
 			successful = run(command);
 			command_i = 0;
@@ -206,7 +203,7 @@ void connectors(vector<string>* v, char** command) {
 		}
 			
 		else {
-			command[command_i] = (char*)v->at(i).c_str();
+			command[command_i] = (char*)v->at(i).c_str();	// If no connectors are detected the command is ran
 			command[command_i+1] = 0;
 			command_i++;
 			i++;
@@ -220,9 +217,9 @@ void connectors(vector<string>* v, char** command) {
 }
 
 int main(void) {
-	char argument[1024];					// Array of characters that stores the line of commands from user
-	vector<string> tokens;					// Vector of strings that holds each individual command and/or connector
-	char* command[64];						// Holds the current command to run
+	char argument[1024];					// Array of characters that stores the line of command
+	vector<string> tokens;					// Vector of strings that holds each command/connector
+	char* command[64];						// Holds the current command to execute
 	while(1) {
 		display(*argument);
 		tokenizing(*argument,&tokens);
