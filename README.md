@@ -38,9 +38,13 @@ will print only hello while
 will break the command argument and try to unsuccessfully register `#echo` as an argument in the shell.
 
 Another bug encountered is that connectors between each argument either will require spaces on both sides or non at all in order to work. An example is:
+
     ls -a && echo dog
     ls -a&&echo dog
+
 both of these instances works an parses correctly but
+
     ls -a&& echo dog
     ls -a &&echo dog
+
 will not work correctly.
