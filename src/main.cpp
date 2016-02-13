@@ -55,7 +55,7 @@ void tokenizing(char& argument, vector<string>* v) {
 					goto end;
 				}
 				else if(temp[i] == ';' && temp[i+1] != '\0'){ // (Semicolon) For when there are two commands connected together with
-					size_t pos = temp.find(";"); // a semicolon in between or connector is in front of command
+					size_t pos = temp.find(";");              // a semicolon in between or connector is in front of command
 					string temp2 = temp.substr(pos + 1);
 		
 					temp = temp.substr(0, temp.find(";"));
@@ -85,7 +85,7 @@ void tokenizing(char& argument, vector<string>* v) {
 					goto end;
 				}
 				else if(temp[i] == '|' && temp[i+1] == '|' && temp[i+2] != '\0'){ // (OR) For when there are two commands connected together
-					size_t pos = temp.find("||"); // by the OR connector or connector in front of command
+					size_t pos = temp.find("||");                                 // by the OR connector or connector in front of command
 					string temp2 = temp.substr(pos + 2);
 				
 					temp = temp.substr(0, temp.find("||"));
@@ -102,7 +102,7 @@ void tokenizing(char& argument, vector<string>* v) {
 					goto reset;
 				}
 				else if(temp[i] == '&' && temp[i+1] == '&' && temp[i+2] == '\0' && temp.size() > 2) // (AND) For single arguments with an AND
-				{		// connector at the end
+				{		                                                                            // connector at the end
 					temp.resize(temp.size() - 2);
 					v->push_back(temp);
 					v->push_back("&&");
@@ -113,7 +113,7 @@ void tokenizing(char& argument, vector<string>* v) {
 					goto end;
 				}
 				else if(temp[i] == '&' && temp[i+1] == '&' && temp[i+2] != '\0'){ // (AND) For when two arguments are connected
-					size_t pos = temp.find("&&"); // by an AND connector in front of command
+					size_t pos = temp.find("&&");                                 // by an AND connector in front of command
 					string temp2 = temp.substr(pos + 2);
 			
 					temp = temp.substr(0, temp.find("&&"));

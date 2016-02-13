@@ -1,10 +1,17 @@
 # rshell
 ## Overview
-In this project, we built a simple shell that processes inputs and executes them.
+In this project, we built a simple command shell that processes inputs and executes them.
 
 This shell is able to handle connectors and correctly runs each command whether it is a single argument like `ls`, or has parameters such as `ls -a`. 
 
 The connectors that are usable with this shell include `||`, `&&`, `;`, and `#`.
+
+To execute a command, user must type:
+
+    command = executable [ argumentList ] [ connector cmd ]
+    connector = || or && or ;
+
+It does not have to strictly follow this format format. The user can type it in any combination as long as executables are not stuck together without a connector.
 
 ## Connectors
 The OR connector, denoted by `||`, will connect two arguments and OR them, meaning it will run the first argument and then run the second argument only if the first one failed. For example: 
@@ -31,13 +38,13 @@ The semicolon will run the next command regardless of whether the first once suc
 
 In both instances, pwd would run, since it ignores the successfulness of the first argument.
 
-Anything that appears after a # will be considered a comment, meaning `echo ILIKEPIZZA; # echo ILIKEPIE` will echo ILIKEPIZZA but will not echo ILIKEPIE because everything after # is ignored by the shell.
+Anything that appears after a # will be considered a COMMENT, meaning `echo ILIKEPIZZA; # echo ILIKEPIE` will echo ILIKEPIZZA but will not echo ILIKEPIE because everything after # is ignored by the shell.
 
 ## BuiltIns
 The only current working built in is `exit`, which will exit the program. This command can be chained using the connectors also.
 
 ## Bugs
-A current bug is that # will only work if it is not connected to any argument so that:
+1.A current bug is that # will only work if it is not connected to any argument so that:
 
     echo hello; # echo world
 
@@ -47,14 +54,11 @@ will print only hello while
 
 will break the command argument and try to unsuccessfully register `#echo` as an argument in the shell.
 
-Another bug encountered is that connectors between each argument either will require spaces on both sides or non at all in order to work. An example is:
+2.A limitation we have for our command shell is that pressing the up and down arrow will not bring up the previous inputs.
 
-    ls -a && echo dog
-    ls -a&&echo dog
+3.There are also no redirection commands such as:
 
-both of these instances works and parses correctly but
+    cat oldFile.cpp >> newFile.cpp
 
-    ls -a&& echo dog
-    ls -a &&echo dog
+4.Argument line can only take up to 1024 characters.
 
-will not work correctly.
