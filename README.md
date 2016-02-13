@@ -62,3 +62,9 @@ will break the command argument and try to unsuccessfully register `#echo` as an
 
 4.Argument line can only take up to 1024 characters.
 
+5.A large limitation is that our shell does not utilize and parse quotation marks correctly. So if you were to input the command:
+
+    echo "ls -a && pwd"
+
+the shell would echo `"ls-a` and then be unable to find the command `pwd"`.
+
