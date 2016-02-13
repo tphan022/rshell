@@ -1,37 +1,25 @@
-Script started on Fri 12 Feb 2016 03:08:39 AM PST
-]0;tphan022@hammer:~/rshell/tests[?1034h[tphan022@hammer tests]$ exit/home/csmajs/tphan022/rshell/bin/rshell
-<tphan022@hammer.cs.ucr.edu>$ ls; pwd
-commented_command.sh  exit.sh  multi_command.sh  single_command.sh
-/home/csmajs/tphan022/rshell/tests
-<tphan022@hammer.cs.ucr.edu>$ echo hello && echo world
-hello
-world
-<tphan022@hammer.cs.ucr.edu>$ echo hello || echo cats
-hello
-<tphan022@hammer.cs.ucr.edu>$ echo hello # echo world; ls && pwd
-hello
-<tphan022@hammer.cs.ucr.edu>$ meow || ls -a
-Error in execution! : No such file or directory
-.  ..  commented_command.sh  exit.sh  multi_command.sh	single_command.sh
-<tphan022@hammer.cs.ucr.edu>$ ls&&pwd
-commented_command.sh  exit.sh  multi_command.sh  single_command.sh
-/home/csmajs/tphan022/rshell/tests
-<tphan022@hammer.cs.ucr.edu>$ ls -a; echo this works!
-.  ..  commented_command.sh  exit.sh  multi_command.sh	single_command.sh
-this works!
-<tphan022@hammer.cs.ucr.edu>$ pwd||echo this shouldnt print
-/home/csmajs/tphan022/rshell/tests
-<tphan022@hammer.cs.ucr.edu>$ echo he; llo#echo world
-hello#echo world
-<tphan022@hammer.cs.ucr.edu>$ mkdir testdir; ls -a; && pwd || ls
-.  ..  commented_command.sh  exit.sh  multi_command.sh	single_command.sh  testdir
-Error in execution! : No such file or directory
-commented_command.sh  exit.sh  multi_command.sh  single_command.sh  testdir
-<tphan022@hammer.cs.ucr.edu>$ rm -rf testdir && echo directory removed || echo moo
-directory removed
-<tphan022@hammer.cs.ucr.edu>$ exit
-Program Exited.
-]0;tphan022@hammer:~/rshell/tests[tphan022@hammer tests]$ exit
-exit
+#!/bin/sh
+#this script tests multiple commands ran in conjuction.
 
-Script done on Fri 12 Feb 2016 03:16:19 AM PST
+echo run the from the rshell directory
+echo
+./bin/rshell<<EOF
+echo first case:
+ls -a && pwd
+echo second case:
+ls -a&&pwd
+echo third case:
+mkdir newdir; ls -a || echo hello!
+echo fourth case:
+echo removing newdir && rm -rf newdir && ls -a;
+echo fifth case:
+echo "ls -a && pwd"
+echo sixth case:
+pwd # echo hello world! && ls
+echo seventh case:
+pwd #echo this shouldn't print
+echo eighth case:
+meow_meow || ls -a && pwd
+exit
+EOF
+echo

@@ -1,27 +1,14 @@
-Script started on Fri 12 Feb 2016 03:53:39 AM PST
-]0;tphan022@hammer:~/rshell/tests[?1034h[tphan022@hammer tests]$ exit/home/csmajs/tphan022/rshell/bin/rshell
-<tphan022@hammer.cs.ucr.edu>$ exit
-Program Exited.
-]0;tphan022@hammer:~/rshell/tests[tphan022@hammer tests]$ /home/csmajs/tphan022/rshell/bin/rshell
-exit[K/home/csmajs/tphan022/rshell/bin/rshell
-<tphan022@hammer.cs.ucr.edu>$ ls; exit
-commented_command.sh  exit.sh  multi_command.sh  single_command.sh
-Program Exited.
-]0;tphan022@hammer:~/rshell/tests[tphan022@hammer tests]$ /home/csmajs/tphan022/rshell/bin/rshell
-<tphan022@hammer.cs.ucr.edu>$ ls -a && pwd; mkdir testingdir && ls; rm -rf testingdir, ; ls && exit
-.  ..  commented_command.sh  exit.sh  multi_command.sh	single_command.sh
-/home/csmajs/tphan022/rshell/tests
-commented_command.sh  exit.sh  multi_command.sh  single_command.sh  testingdir
-commented_command.sh  exit.sh  multi_command.sh  single_command.sh
-Program Exited.
-]0;tphan022@hammer:~/rshell/tests[tphan022@hammer tests]$ /home/csmajs/tphan022/rshell/bin/rshell
-<tphan022@hammer.cs.ucr.edu>$ ped  wd || exit
-/home/csmajs/tphan022/rshell/tests
-<tphan022@hammer.cs.ucr.edu>$ pwd # exit
-/home/csmajs/tphan022/rshell/tests
-<tphan022@hammer.cs.ucr.edu>$ exit
-Program Exited.
-]0;tphan022@hammer:~/rshell/tests[tphan022@hammer tests]$ exit
-exit
+#!/bin/sh
+#this tests the exit command.
 
-Script done on Fri 12 Feb 2016 03:56:49 AM PST
+echo "Run this within the rshell directory"
+echo
+./bin/rshell<<EOF
+echo first case:
+echo hello || exit
+echo second case:
+meow_meow && exit
+echo third case:
+ls -a; pwd && echo Goodbye! && exit
+EOF
+echo
