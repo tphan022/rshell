@@ -206,7 +206,7 @@ bool testcommand(int selector, string dir) {
 		bool check2 = false;
 		if(check) {
 			check2 = S_ISREG(buf.st_mode);
-			//If this check is true then it is most likely 
+			//If this check is false then it is most likely 
 			// a directory (not a regular file).
 			if(!check2) {
 				cout << "(true)" << endl;
