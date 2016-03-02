@@ -252,9 +252,12 @@ void connectors(vector<string>* v, char** command) {
 			string testcode;
 			i++;
 			testcode = v->at(i);
+			//These will check is the line is a flag, if it is not
+			// then will set -e as the default.
 			if(testcode == "-e") {
 				i++;
 				testcode = v->at(i);
+				//This calls the test command function which returns a boolean value.
 				successful = testcommand(0, testcode);
 			}
 			else if(testcode == "-f") {
@@ -272,7 +275,7 @@ void connectors(vector<string>* v, char** command) {
 			}
 			i++;
 			//These checks to see if this command is the last command in the order,
-			//if it is, then break out of the loop before out-of-range happens.
+			// if it is, then break out of the loop before out-of-range happens.
 			if(i >= v->size()) {
 				break;
 			}
@@ -283,6 +286,9 @@ void connectors(vector<string>* v, char** command) {
 				}
 
 			}
+			//The testcase flag has checks throughout the entire loop and will skip
+			// the usual implimentation accordingly because the test command
+			// was used. 
 			testcase = true;
 			command_i = 0;
 		}
