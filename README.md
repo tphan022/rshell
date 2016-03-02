@@ -55,7 +55,7 @@ The test case has several ways of implementations:
 `-e` can be replaced with the other two flags and the brackets **need** to have spacing between the arguments otherwise the command breaks.
 
 ## Bugs
-1. A current bug is that # will only work if it is not connected to any argument so that:
+* A current bug is that # will only work if it is not connected to any argument so that:
 
     echo hello; # echo world
 
@@ -65,19 +65,19 @@ will print only hello while
 
 will break the command argument and try to unsuccessfully register `#echo` as an argument in the shell.
 
-2. A limitation we have for our command shell is that pressing the up and down arrow will not bring up the previous inputs.
+* A limitation we have for our command shell is that pressing the up and down arrow will not bring up the previous inputs.
 
-3. There are also no redirection commands such as:
+* There are also no redirection commands such as:
 
     cat oldFile.cpp >> newFile.cpp
 
-4. Argument line can only take up to 1024 characters.
+* Argument line can only take up to 1024 characters.
 
-5. A large limitation is that our shell does not utilize and parse quotation marks correctly. So if you were to input the command:
+* A large limitation is that our shell does not utilize and parse quotation marks correctly. So if you were to input the command:
 
     echo "ls -a && pwd"
 
 the shell would echo `"ls-a` and then be unable to find the command `pwd"`.
 
-6. The test command using the brackets will work even if the end bracket is missing: `[ -f src/main.cpp `.
+* The test command using the brackets will work even if the end bracket is missing: `[ -f src/main.cpp `.
 
