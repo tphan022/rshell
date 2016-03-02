@@ -169,11 +169,11 @@ bool testcommand(int selector, string dir) {
 		//and returns a boolean value of whether it exists.
 		check = (stat(dir.c_str(), &buf) == 0);
 		if(check) {
-			cout << "(true)" << endl;
+			cout << "(True)" << endl;
 			return true;
 		}
 		else {
-			cout << "(false)" << endl;
+			cout << "(False)" << endl;
 			return false;
 		}
 	}
@@ -187,16 +187,16 @@ bool testcommand(int selector, string dir) {
 			check2 = S_ISREG(buf.st_mode);
 			//If the case was true then this returns true.
 			if(check2) {
-				cout << "(true)" << endl;
+				cout << "(True)" << endl;
 				return true;
 			}
 			else {
-				cout << "(false)" << endl;
+				cout << "(False)" << endl;
 				return false;
 			}
 		}
 		else {
-			cout << "(false)" << endl;
+			cout << "(False)" << endl;
 			return false;
 		}
 	}
@@ -209,16 +209,16 @@ bool testcommand(int selector, string dir) {
 			//If this check is false then it is most likely 
 			// a directory (not a regular file).
 			if(!check2) {
-				cout << "(true)" << endl;
+				cout << "(True)" << endl;
 				return true;
 			}
 			else {
-				cout << "(false)" << endl;
+				cout << "(False)" << endl;
 				return false;
 			}
 		}
 		else {
-			cout << "(false)" << endl;
+			cout << "(False)" << endl;
 			return false;
 		}
 	}
