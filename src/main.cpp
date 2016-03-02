@@ -6,6 +6,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
 
 using namespace std;
 
@@ -159,12 +160,42 @@ bool run(char** runcommand) {
 	return true;
 }
 
+bool testcommand(int selector, string dir) {
+	bool check = false;
+	struct stat buf;
+	if(selector == 0) {
+		cout << "you selected -e or nothing" << endl;
+		check = (stat(dir.c_str(), &buf) == 0);
+		if(check) {
+			cout << "(true)" << endl;
+			return true;
+		}
+		else {
+			cout << "(false)" << endl;
+			return false;
+		}
+	}
+	else if(selector == 1) {
+		cout << "you selected -f" << endl;
+		return true;
+	}
+	else if(selector == 2) {
+		cout << "you selected -d" << endl;
+		return true;
+	}
+	else{
+		cout << "selector failed" << endl;
+	}
+	return false;
+}
+
 // Goes through the vector of tokens and sends each command to the run function
 void connectors(vector<string>* v, char** command) {
 
 	int  successful = 0;
 	unsigned int i = 0;
 	int command_i = 0;
+	bool testcase = false;
 	while(i < v->size()) {
 		if(v->at(i) == "exit") { // Stops running through whole program 
 			cout << "Program Exited." << endl;
@@ -175,9 +206,48 @@ void connectors(vector<string>* v, char** command) {
 			successful = run(command);
 			break;
 		}
+		// This is the new if statement for checking if this is the test command
+		if(v->at(i) == "test" || v->at(i) == "[") {
+			string testcode;
+			i++;
+			testcode = v->at(i);
+			if(testcode == "-e") {
+				i++;
+				testcode = v->at(i);
+				successful = testcommand(0, testcode);
+			}
+			else if(testcode == "-f") {
+				i++;
+				testcode = v->at(i);
+				successful = testcommand(1, testcode);
+			}
+			else if(testcode == "-d") {
+				i++;
+				testcode = v->at(i);
+				successful = testcommand(2, testcode);
+			}
+			else {
+				successful = testcommand(0, testcode);
+			}
+			i++;
+			if(i >= v->size()) {
+				break;
+			}
+			else if(v->at(i) == "]") {
+				i++;
+			}
+			testcase = true;
+			command_i = 0;
+		}
+
 		if(v->at(i) == "&&") { // Executes the next command if the previous one worked
-			command[command_i] = 0;
-			successful = run(command);
+			if(!testcase) {
+				command[command_i] = 0;
+				successful = run(command);
+			}
+			else{
+				testcase = false;
+			}
 			if(!successful) {
 				break;
 			}
@@ -188,8 +258,13 @@ void connectors(vector<string>* v, char** command) {
 
 		}
 		else if(v->at(i) == "||") {	// Executes the next command if the previous one failed
-			command[command_i] = 0;
-			successful = run(command);
+			if(!testcase) {
+				command[command_i] = 0;
+				successful = run(command);
+			}
+			else{
+				testcase = false;
+			}
 			if(!successful) {
 				command_i = 0;
 				i++;
@@ -199,19 +274,33 @@ void connectors(vector<string>* v, char** command) {
 			}
 		}
 		else if(v->at(i) == ";") { // Executes next command regardless of previous one
-			command[command_i] = 0;
-			successful = run(command);
+			if(!testcase) {
+				//check to see if semicolon works.
+				command[command_i] = 0;
+				successful = run(command);
+			}
+			else{
+				testcase = false;
+			}
 			command_i = 0;
 			i++;
 		}
 			
 		else {
-			command[command_i] = (char*)v->at(i).c_str(); // If no connectors are detected the command is ran
-			command[command_i+1] = 0;
-			command_i++;
-			i++;
-			if(i >= v->size()) {
-				successful = run(command);
+			// added checks throughout the function to see if tesrcases were used
+			if(!testcase) {
+				command[command_i] = (char*)v->at(i).c_str(); 
+				// If no connectors are detected the command is ran
+				command[command_i+1] = 0;
+				command_i++;
+				i++;
+				if(i >= v->size()) {
+					successful = run(command);
+					break;
+				}
+			}
+			else { 
+				testcase = false;
 				break;
 			}
 		}
