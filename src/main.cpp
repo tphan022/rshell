@@ -163,8 +163,10 @@ bool run(char** runcommand) {
 bool testcommand(int selector, string dir) {
 	bool check = false;
 	struct stat buf;
+	//This is the -e and nothing selected case
 	if(selector == 0) {
-		cout << "you selected -e or nothing" << endl;
+		//The stat system call checks to see whether the file/directory exists
+		//and returns a boolean value of whether it exists.
 		check = (stat(dir.c_str(), &buf) == 0);
 		if(check) {
 			cout << "(true)" << endl;
@@ -175,16 +177,55 @@ bool testcommand(int selector, string dir) {
 			return false;
 		}
 	}
+	//This checks to see if the target is a regular file.
 	else if(selector == 1) {
-		cout << "you selected -f" << endl;
-		return true;
+		check = (stat(dir.c_str(), &buf) == 0);
+		bool check2 = false;
+		if(check) {
+			//This is a second check using stat's S_ISREG macro to check if
+			//the file/directory checked was a regular file.
+			check2 = S_ISREG(buf.st_mode);
+			//If the case was true then this returns true.
+			if(check2) {
+				cout << "(true)" << endl;
+				return true;
+			}
+			else {
+				cout << "(false)" << endl;
+				return false;
+			}
+		}
+		else {
+			cout << "(false)" << endl;
+			return false;
+		}
 	}
+	//This checks to see if the target is a directory.
 	else if(selector == 2) {
-		cout << "you selected -d" << endl;
-		return true;
+		check = (stat(dir.c_str(), &buf) == 0);
+		bool check2 = false;
+		if(check) {
+			check2 = S_ISREG(buf.st_mode);
+			//If this check is true then it is most likely 
+			// a directory (not a regular file).
+			if(!check2) {
+				cout << "(true)" << endl;
+				return true;
+			}
+			else {
+				cout << "(false)" << endl;
+				return false;
+			}
+		}
+		else {
+			cout << "(false)" << endl;
+			return false;
+		}
 	}
+	//This case should never happen.
 	else{
-		cout << "selector failed" << endl;
+		perror("invalid test command case");
+		exit(1);
 	}
 	return false;
 }
@@ -230,11 +271,17 @@ void connectors(vector<string>* v, char** command) {
 				successful = testcommand(0, testcode);
 			}
 			i++;
+			//These checks to see if this command is the last command in the order,
+			//if it is, then break out of the loop before out-of-range happens.
 			if(i >= v->size()) {
 				break;
 			}
 			else if(v->at(i) == "]") {
 				i++;
+				if(i >= v->size()) {
+					break;
+				}
+
 			}
 			testcase = true;
 			command_i = 0;

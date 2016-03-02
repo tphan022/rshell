@@ -41,10 +41,21 @@ In both instances, pwd would run, since it ignores the successfulness of the fir
 Anything that appears after a # will be considered a COMMENT, meaning `echo ILIKEPIZZA; # echo ILIKEPIE` will echo ILIKEPIZZA but will not echo ILIKEPIE because everything after # is ignored by the shell.
 
 ## BuiltIns
-The only current working built in is `exit`, which will exit the program. This command can be chained using the connectors also.
+The first built in is `exit`, which will exit the program. This command can be chained using the connectors also.
+
+The second built in is the test command, which, depending on the flag, will check if the file/directory exists. `-e` and no flag will check if the target is a file **OR** directory. `-f` will check if the target is a regular file. `-d` will check if the target is a directory. 
+
+The test case has several ways of implementations:
+
+    test main.cpp
+    test -e main.cpp
+    [ main.cpp ]
+    [ -e main.cpp ]
+
+`-e` can be replaced with the other two flags and the brackets **need** to have spacing between the arguments otherwise the command breaks.
 
 ## Bugs
-1.A current bug is that # will only work if it is not connected to any argument so that:
+1. A current bug is that # will only work if it is not connected to any argument so that:
 
     echo hello; # echo world
 
@@ -54,17 +65,19 @@ will print only hello while
 
 will break the command argument and try to unsuccessfully register `#echo` as an argument in the shell.
 
-2.A limitation we have for our command shell is that pressing the up and down arrow will not bring up the previous inputs.
+2. A limitation we have for our command shell is that pressing the up and down arrow will not bring up the previous inputs.
 
-3.There are also no redirection commands such as:
+3. There are also no redirection commands such as:
 
     cat oldFile.cpp >> newFile.cpp
 
-4.Argument line can only take up to 1024 characters.
+4. Argument line can only take up to 1024 characters.
 
-5.A large limitation is that our shell does not utilize and parse quotation marks correctly. So if you were to input the command:
+5. A large limitation is that our shell does not utilize and parse quotation marks correctly. So if you were to input the command:
 
     echo "ls -a && pwd"
 
 the shell would echo `"ls-a` and then be unable to find the command `pwd"`.
+
+6. The test command using the brackets will work even if the end bracket is missing: `[ -f src/main.cpp `.
 
