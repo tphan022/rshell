@@ -63,6 +63,7 @@ void tokenizing(char& argument, vector<string>* v) {
 					if(temp.size() != 0)
 					{
 						v->push_back(temp);
+						v->push_back(";");
 					}
 					else
 					{
@@ -93,6 +94,7 @@ void tokenizing(char& argument, vector<string>* v) {
 					if(temp.size() > 0)
 					{
 						v->push_back(temp);
+						v->push_back("||");
 					}
 					else
 					{
@@ -121,6 +123,7 @@ void tokenizing(char& argument, vector<string>* v) {
 					if(temp.size() > 0)	
 					{
 						v->push_back(temp);
+						v->push_back("&&");
 					}
 					else
 					{
@@ -130,9 +133,68 @@ void tokenizing(char& argument, vector<string>* v) {
 					temp = temp2;
 					goto reset;
 				}
+				else if(temp[i] == '(' && temp.size() == 1)
+				{
+					v->push_back(temp);
+					goto end;
+				}
+				else if(temp[i] == '(' && temp.size() > 1 && temp[i+1] == '\0')
+				{
+					temp.resize(temp.size() - 1);
+					v->push_back(temp);
+					v->push_back("(");
+					goto end;
+				}
+				else if(temp[i] == '(' && temp[i+1] != '\0')
+				{
+					size_t pos = temp.find("(");
+					string temp2 = temp.substr(pos + 1);
 					
-			}
-			v->push_back(temp); // For when there is just an argument with no connectors attached 
+					temp = temp.substr(0, temp.find("("));
+					if(temp.size() != 0)
+					{
+						v->push_back(temp);
+						v->push_back("(");
+					}
+					else
+					{
+						v->push_back("(");
+					}
+					temp = temp2;
+					goto reset;
+				}
+				else if(temp[i] == ')' && temp.size() == 1)
+				{
+					v->push_back(temp);
+					goto end;
+				}
+				else if(temp[i] == ')' && temp.size() > 1 &&
+					temp[i+1] == '\0')
+				{
+					temp.resize(temp.size() - 1);
+					v->push_back(temp);
+					v->push_back(")");
+					goto end;
+				}
+				else if(temp[i] == ')' && temp[i+1] != '\0'){
+					size_t pos = temp.find(")");
+					string temp2 = temp.substr(pos + 1);
+		
+					temp = temp.substr(0, temp.find(")"));
+					if(temp.size() != 0)
+					{
+						v->push_back(temp);
+						v->push_back(")");
+					}
+					else
+					{
+						v->push_back(")");
+					}
+					temp = temp2;
+					goto reset;
+				}
+			}	
+			v->push_back(temp);
 			end:;	
 		}
 	}
