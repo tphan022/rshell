@@ -12,7 +12,7 @@ echo test newdir
 test newdir
 echo testing -e
 test -e newfile
-test -e new dir
+test -e newdir
 echo testing -f
 test -f newfile
 test -f newdir
