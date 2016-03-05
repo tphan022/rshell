@@ -4,6 +4,7 @@
 echo "This file should run inside the rshell directory"
 echo
 ./bin/rshell<<EOF
+echo creating files
 touch newfile
 mkdir newdir
 echo test newfile
@@ -25,6 +26,12 @@ echo testing brackets
 echo testing connectors
 [ newfile ] && echo hello world
 [ newdir ] || echo do not output
+echo testing missing brackets
+newfile ]
+[ -f newfile && echo hello
+echo testing invalid amount
+[ -d newdir newfile ] 
+echo removing files
 rm -rf newfile
 rm -rf newdir
 exit
