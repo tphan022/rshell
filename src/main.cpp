@@ -406,12 +406,25 @@ bool connectors(vector<string>* v, char** command) {
 			}
 			else {
 				//break; PREVIOUS CODE
+				vector<string>::iterator it = v->begin() + i;
 				do
 				{
+					++it;
 					++i;
 				}while( v->at(i) != ";" && v->at(i) != "||" && v->at(i) != "&&");
-				command_i = 0;
-				i++;
+				if(it != v->end())
+				{
+					if(v->at(i) == "||")
+					{
+						return false;
+					}
+					command_i = 0;
+					i++;
+				}
+				else
+				{
+					break;
+				}
 			}
 		}
 		else if(v->at(i) == ";") { // Executes next command regardless of previous one
