@@ -9,6 +9,7 @@ echo hello || exit
 echo second case:
 meow_meow && exit
 echo third case:
-ls -a; pwd && echo Goodbye! && exit
+ls -a; pwd && echo Hello! ||  exit
+(echo A || echo B) && echo Goodbye!! && exit
 EOF
 echo
