@@ -12,6 +12,8 @@ echo third case:
 ls #echo hello world!
 echo fourth case:
 pwd#mkdir newdir
+(echo A && echo B) # meow meow
+(echo A # meow meow
 exit
 EOF
 echo
