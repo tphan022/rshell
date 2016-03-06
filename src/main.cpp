@@ -417,6 +417,13 @@ bool connectors(vector<string>* v, char** command) {
 						command_i = 0;
 						break;
 					}
+					else if(v->at(i) == "(") {
+						while(v->at(i) != ")" && i < v->size()) {
+							i++;
+						}
+						i++;
+						break;
+					}
 					i++;
 				}
 				if(i >= v->size()) {
