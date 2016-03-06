@@ -17,7 +17,7 @@ void display(char& argument) {
 		char* userinfo = getlogin(); // Gets login informatiom from the user (Username and Location)
 		char location[20];
 		gethostname(location,20);
-		cout << "<" << userinfo << "@" << location << ">" << "$ ";
+		cout << "<" << userinfo << "@" << location << ">" << " $ ";
 		fgets(&argument,1024,stdin); // Gets the line of argument from the user
 		if(argument != '\n') {
 			break;
@@ -133,19 +133,19 @@ void tokenizing(char& argument, vector<string>* v) {
 					temp = temp2;
 					goto reset;
 				}
-				else if(temp[i] == '(' && temp.size() == 1)
+				else if(temp[i] == '(' && temp.size() == 1) // Detects single starting bracket and pushes into vector
 				{
 					v->push_back(temp);
 					goto end;
 				}
-				else if(temp[i] == '(' && temp.size() > 1 && temp[i+1] == '\0')
+				else if(temp[i] == '(' && temp.size() > 1 && temp[i+1] == '\0') // Detects command with starting bracket at end
 				{
 					temp.resize(temp.size() - 1);
 					v->push_back(temp);
 					v->push_back("(");
 					goto end;
 				}
-				else if(temp[i] == '(' && temp[i+1] != '\0')
+				else if(temp[i] == '(' && temp[i+1] != '\0') // Detects command with starting bracket in the middle or in front
 				{
 					size_t pos = temp.find("(");
 					string temp2 = temp.substr(pos + 1);
@@ -163,12 +163,12 @@ void tokenizing(char& argument, vector<string>* v) {
 					temp = temp2;
 					goto reset;
 				}
-				else if(temp[i] == ')' && temp.size() == 1)
+				else if(temp[i] == ')' && temp.size() == 1) // Detects single ending bracket and pushed into vector
 				{
 					v->push_back(temp);
 					goto end;
 				}
-				else if(temp[i] == ')' && temp.size() > 1 &&
+				else if(temp[i] == ')' && temp.size() > 1 && // Detects command with ending bracket at the end
 					temp[i+1] == '\0')
 				{
 					temp.resize(temp.size() - 1);
@@ -176,7 +176,7 @@ void tokenizing(char& argument, vector<string>* v) {
 					v->push_back(")");
 					goto end;
 				}
-				else if(temp[i] == ')' && temp[i+1] != '\0'){
+				else if(temp[i] == ')' && temp[i+1] != '\0'){ // Detects command with ending bracket in the middle or in front
 					size_t pos = temp.find(")");
 					string temp2 = temp.substr(pos + 1);
 		
@@ -427,7 +427,7 @@ bool connectors(vector<string>* v, char** command) {
 			command_i = 0;
 			i++;
 		}
-		else if(v->at(i) == "(")
+		else if(v->at(i) == "(") // Pushes commands into the new vector and recursively calls to find whether true or false
 		{
 			vector<string> paren;
 			paren.clear();
@@ -461,7 +461,7 @@ bool connectors(vector<string>* v, char** command) {
 			}
 		}
 	}
-	if(successful)
+	if(successful) // Returns either true or false depending on whether the commands executred correctly
 	{
 		return true;
 	}
