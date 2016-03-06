@@ -293,11 +293,12 @@ bool testcommand(int selector, string dir) {
 }
 
 // Goes through the vector of tokens and sends each command to the run function
-void connectors(vector<string>* v, char** command) {
+bool connectors(vector<string>* v, char** command) {
 
 	int  successful = 0;
 	unsigned int i = 0;
 	int command_i = 0;
+	bool parencheck = false;
 	bool testcase = false;
 	while(i < v->size()) {
 		if(v->at(i) == "exit") { // Stops running through whole program 
@@ -305,6 +306,11 @@ void connectors(vector<string>* v, char** command) {
 			exit(0);
 		}
 		if(v->at(i) == "#") { // Stops running through vector after seeing the "#" symbol
+			if(parencheck == true)
+			{
+				parencheck = false;
+				break;
+			}
 			command[command_i] = 0;
 			successful = run(command);
 			break;
@@ -357,8 +363,15 @@ void connectors(vector<string>* v, char** command) {
 
 		if(v->at(i) == "&&") { // Executes the next command if the previous one worked
 			if(!testcase) {
-				command[command_i] = 0;
-				successful = run(command);
+				if(parencheck == false)
+				{
+					command[command_i] = 0;
+					successful = run(command);
+				}
+				else
+				{
+					parencheck = false;
+				}
 			}
 			else{
 				testcase = false;
@@ -374,8 +387,15 @@ void connectors(vector<string>* v, char** command) {
 		}
 		else if(v->at(i) == "||") {	// Executes the next command if the previous one failed
 			if(!testcase) {
-				command[command_i] = 0;
-				successful = run(command);
+				if(parencheck == false)
+				{
+					command[command_i] = 0;
+					successful = run(command);
+				}
+				else
+				{
+					parencheck = false;
+				}
 			}
 			else{
 				testcase = false;
@@ -391,8 +411,15 @@ void connectors(vector<string>* v, char** command) {
 		else if(v->at(i) == ";") { // Executes next command regardless of previous one
 			if(!testcase) {
 				//check to see if semicolon works.
-				command[command_i] = 0;
-				successful = run(command);
+				if(parencheck == false)
+				{
+					command[command_i] = 0;
+					successful = run(command);
+				}
+				else
+				{
+					parencheck = false;
+				}
 			}
 			else{
 				testcase = false;
@@ -404,6 +431,8 @@ void connectors(vector<string>* v, char** command) {
 		{
 			vector<string> paren;
 			paren.clear();
+			parencheck = true;
+			++i;
 			while(v->at(i) != ")")
 			{
 				paren.push_back(v->at(i));
