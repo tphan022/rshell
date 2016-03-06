@@ -54,6 +54,19 @@ The test case has several ways of implementations:
 
 `-e` can be replaced with the other two flags and the brackets **need** to have spacing between the arguments otherwise the command breaks.
 
+The third built in is the precedence operators. The precedence operator is implemented through parentheses ( ). It is used to change the precedence of the returns of chains of connectors and commands.
+
+This is an example of using parentheses:
+
+	(echo Dogs && echo Cats) || (echo Corgis && echo Garfield)
+
+This would output:
+	
+	Dogs
+	Cats
+
+It treats whatever is inside the parentheses as a single command. So when the two commands in the parentheses executes correctly it will not run (echo Corgis && echo Garfield). If the two commands failed then the program will run (echo Corgis && echo Garfield).
+
 ## Bugs
 * A current bug is that # will only work if it is not connected to any argument so that:
 

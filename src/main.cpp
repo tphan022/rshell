@@ -406,10 +406,10 @@ bool connectors(vector<string>* v, char** command) {
 			}
 			else {
 				//break; PREVIOUS CODE
-				while(v->at(i) != "||" || v->at(i) == "&&" || v->at(i) == ";")
+				do
 				{
 					++i;
-				}
+				}while( v->at(i) != ";" && v->at(i) != "||" && v->at(i) != "&&");
 				command_i = 0;
 				i++;
 			}
