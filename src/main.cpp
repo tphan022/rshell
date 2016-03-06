@@ -405,18 +405,22 @@ bool connectors(vector<string>* v, char** command) {
 				i++;
 			}
 			else {
-				//break; PREVIOUS CODE
+				// Checks for any other connectors after the || statement.
 				while(i < v->size()) {
+					//Continues if && is found.
 					if(v->at(i) == "&&") {
 						i++;
 						command_i = 0;
 						break;
 					}
+					//Continues if ; is found.
 					else if(v->at(i) == ";") {
 						i++;
 						command_i = 0;
 						break;
 					}
+					// If the parentheses is found, this will ignore ALL values 
+					//  within the parentheses including && and ;.
 					else if(v->at(i) == "(") {
 						while(v->at(i) != ")" && i < v->size()) {
 							i++;
@@ -426,6 +430,7 @@ bool connectors(vector<string>* v, char** command) {
 					}
 					i++;
 				}
+				//Important check to prevent vector out of bounds.
 				if(i >= v->size()) {
 					break;
 				}
