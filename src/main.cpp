@@ -400,7 +400,19 @@ void connectors(vector<string>* v, char** command) {
 			command_i = 0;
 			i++;
 		}
-			
+		else if(v->at(i) == "(")
+		{
+			vector<string> paren;
+			paren.clear();
+			while(v->at(i) != ")")
+			{
+				paren.push_back(v->at(i));
+				++i;
+			}
+			successful = connectors(& paren, command);
+			command_i = 0;
+			++i;
+		}
 		else {
 			// added checks throughout the function to see if tesrcases were used
 			if(!testcase) {
@@ -419,6 +431,14 @@ void connectors(vector<string>* v, char** command) {
 				break;
 			}
 		}
+	}
+	if(successful)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
 	}
 		
 }
