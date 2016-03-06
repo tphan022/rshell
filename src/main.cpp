@@ -428,10 +428,13 @@ bool connectors(vector<string>* v, char** command) {
 						i++;
 						break;
 					}
+					else if(v->at(i) == "#") {
+						break;
+					}
 					i++;
 				}
 				//Important check to prevent vector out of bounds.
-				if(i >= v->size()) {
+				if(i >= v->size() || v->at(i) == "#") {
 					break;
 				}
 			}
