@@ -1,7 +1,7 @@
 # rshell
 ## Overview
 
-**NOTE TO SELF: ENABLE CURRENT GIT VERSION IF 403 ERROR BY GOING TO DIRECTORY: SOURCE /OPT/RH/DEVTOOLSET-2/ENABLE
+**NOTE TO SELF: ENABLE CURRENT GIT VERSION IF 403 ERROR BY GOING TO DIRECTORY: SOURCE /OPT/RH/DEVTOOLSET-2/ENABLE**
 
 In this project, we built a simple command shell that processes inputs and executes them.
 
